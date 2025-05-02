@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/client.js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              Int              @id @default(autoincrement())
+  name            String
+  email           String           @unique
+  password        String
+  role            String           @default("student")
+  enrolledCourses Course[]         @relation("StudentCourses")
+  photoUrl        String           @default("")
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  coursesCreated  Course[]         @relation("CreatorCourses")
+  coursePurchases CoursePurchase[]
+  courseProgress  CourseProgress[]
+  enrollments     Enrollment[]
+}
+
+model Course {
+  id               Int              @id @default(autoincrement())
+  courseTitle      String
+  subTitle         String?
+  description      String?
+  category         String
+  courseLevel      String?
+  coursePrice      Float?
+  courseThumbnail  String?
+  enrolledStudents User[]           @relation("StudentCourses")
+  lectures         Lecture[]
+  creatorId        Int
+  creator          User             @relation("CreatorCourses", fields: [creatorId], references: [id])
+  isPublished      Boolean          @default(true)
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  coursePurchases  CoursePurchase[]
+  courseProgress   CourseProgress[]
+  sessions         Session[]
+  enrollments      Enrollment[]
+}
+
+model Lecture {
+  id            Int      @id @default(autoincrement())
+  lectureTitle  String
+  videoUrl      String?
+  publicId      String?
+  isPreviewFree Boolean
+  courseId      Int?
+  course        Course?  @relation(fields: [courseId], references: [id])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+model CoursePurchase {
+  id        Int      @id @default(autoincrement())
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  amount    Float
+  status    String   @default("pending")
+  paymentId String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CourseProgress {
+  id              Int               @id @default(autoincrement())
+  userId          Int
+  user            User              @relation(fields: [userId], references: [id])
+  courseId        Int
+  course          Course            @relation(fields: [courseId], references: [id])
+  completed       Boolean
+  lectureProgress LectureProgress[]
+}
+
+model LectureProgress {
+  id         Int            @id @default(autoincrement())
+  lectureId  Int
+  viewed     Boolean
+  progressId Int
+  progress   CourseProgress @relation(fields: [progressId], references: [id])
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  title     String
+  videoUrl  String?
+  richText  String 
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+  createdAt DateTime @default(now())
+}
+
+model Enrollment {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    Int
+  course    Course   @relation(fields: [courseId], references: [id])
+  courseId  Int
+  createdAt DateTime @default(now())
+}

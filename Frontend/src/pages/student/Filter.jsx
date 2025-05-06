@@ -10,20 +10,18 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 const categories = [
-  { id: "nextjs", label: "Next JS" },
-  { id: "data science", label: "Data Science" },
-  { id: "frontend development", label: "Frontend Development" },
-  { id: "fullstack development", label: "Fullstack Development" },
-  { id: "mern stack development", label: "MERN Stack Development" },
-  { id: "backend development", label: "Backend Development" },
-  { id: "javascript", label: "Javascript" },
-  { id: "python", label: "Python" },
-  { id: "docker", label: "Docker" },
-  { id: "mongodb", label: "MongoDB" },
-  { id: "html", label: "HTML" },
+  
+  { id: "Data Science", label: "Data Science" },
+  { id: "Web Development", label: "Web Development" },
+  { id: "Computer Science", label: "Computer Science" },
+  { id: "Programming", label: "Programming" },
+
+  { id: "Javascript", label: "Javascript" },
+  { id: "Next JS", label: "Next JS" },
+  { id: "MongoDB", label: "MongoDB" },
 ];
 
 const Filter = ({ handleFilterChange }) => {
@@ -41,7 +39,7 @@ const Filter = ({ handleFilterChange }) => {
 
   const selectByPriceHandler = (selectedValue) => {
     setSortByPrice(selectedValue);
-    handleFilterChange(selectedCategories, selectedValue);
+    handleFilterChange([...selectedCategories], selectedValue);
   };
   return (
     <div className="w-full md:w-[20%]">
@@ -69,7 +67,7 @@ const Filter = ({ handleFilterChange }) => {
               id={category.id}
               checked={selectedCategories.includes(category.id)}
               onCheckedChange={(checked) =>
-                handleCategoryChange(category.id, checked)
+                handleCategoryChange(category.id, Boolean(checked))
               }
             />
             <Label

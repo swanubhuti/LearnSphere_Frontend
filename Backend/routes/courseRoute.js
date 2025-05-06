@@ -8,14 +8,11 @@ import {
   getCourseById,
   deleteCourse,
   getCreatorCourses,
-  createLecture,
-  getCourseLecture,
-  editLecture,
-  removeLecture,
-  getLectureById,
+ 
 } from "../controllers/course.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import upload from "../utils/multer.js";
+import { getInstructorStats } from "../controllers/progress.controller.js";
 
 const router = express.Router();
 
@@ -44,22 +41,14 @@ router.get("/:courseId", isAuthenticated, getCourseById);
 
 router.get("/instructor/courses", isAuthenticated, getCreatorCourses);
 
-router.delete("/:courseId", deleteCourse);
+router.delete("/:courseId", isAuthenticated,deleteCourse);
 router.put(
   "/:courseId",
   isAuthenticated,
   upload.single("courseThumbnail"),
   editCourse
 );
-router.post("/:courseId/lecture", isAuthenticated, createLecture);
-router.get("/:courseId/lecture", isAuthenticated, getCourseLecture);
+router.get("/instructor/stats", isAuthenticated, getInstructorStats);
 
-router.post("/:courseId/lecture/:lectureId", isAuthenticated, editLecture);
-
-// DELETE a lecture
-router.delete("/lecture/:lectureId", isAuthenticated, removeLecture);
-
-// GET single lecture by ID
-router.get("/lecture/:lectureId", isAuthenticated, getLectureById);
 
 export default router;

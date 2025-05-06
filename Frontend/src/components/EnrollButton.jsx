@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 import { Loader2 } from "lucide-react";
 import { toast } from "sonner";
@@ -8,7 +8,7 @@ const EnrollButton = ({ courseId}) => {
   const [enrollCourse, { isLoading, isSuccess, isError, error }] = useEnrollCourseMutation();
   const { data: myEnrollments } = useGetMyEnrollmentsQuery();
 
-  const enrollments = myEnrollments?.enrollments || []; // ✅ extract array
+  const enrollments = myEnrollments?.enrollments || []; 
 
 const isEnrolled = enrollments.some((e) => e.courseId === Number(courseId));
 

@@ -3,6 +3,7 @@ import { userLoggedIn, userLoggedOut } from "../AuthSlice";
 
 const USER_API = "http://localhost:3000/api/v1/users/";
 
+
 export const authApi = createApi({
   reducerPath: "authApi",
   baseQuery: fetchBaseQuery({ baseUrl: USER_API, credentials: "include" }),
@@ -34,7 +35,7 @@ export const authApi = createApi({
         url: "logout",
         method: "GET",
       }),
-      async onQueryStarted(_, { queryFulfilled, dispatch }) {
+      async onQueryStarted(_, {  dispatch }) {
         try {
           dispatch(userLoggedOut());
         } catch (error) {
@@ -46,6 +47,7 @@ export const authApi = createApi({
       query: () => ({
         url: "me",
         method: "GET",
+        
       }),
     }),
   }),

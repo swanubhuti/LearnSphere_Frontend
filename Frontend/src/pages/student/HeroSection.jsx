@@ -16,10 +16,10 @@ const HeroSection = () => {
   };
 
   return (
-    <div className="relative w-full  bg-gradient-to-r from-sky-700 to-sky-900 py-24 px-5 text-center">
+    <div className="relative w-full  bg-gradient-to-r from-sky-700 to-sky-900 py-12 px-5 text-center">
 
       <div className="max-w-3xl mx-auto " >
-        <h1 className="text-white text-4xl font-medium mb-4">
+        <h1 className="text-white text-4xl font-medium mb-2">
           Find Expert-led courses to Boost Your Career
         </h1>
         <p className="text-gray-200 mb-8">

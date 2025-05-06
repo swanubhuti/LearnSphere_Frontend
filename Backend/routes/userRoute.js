@@ -7,5 +7,7 @@ router.route("/register").post(register);
 router.route("/login").post(login);
 router.route("/logout").get(logout);
 router.route("/me").get(isAuthenticated, loadUser);
+// router.get("/refresh-token", refreshAccessToken);
+
 
 export default router;

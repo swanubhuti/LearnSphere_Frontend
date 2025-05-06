@@ -5,6 +5,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextAlign from "@tiptap/extension-text-align";
 import Highlight from "@tiptap/extension-highlight";
+import Heading from '@tiptap/extension-heading';
 
 import {
   AlignCenter,
@@ -111,6 +112,7 @@ export default function RichTextEditor({ content, onChange, editable }) {
     editable: isEditable,
     extensions: [
       StarterKit.configure({
+        heading: false,
         bulletList: {
           HTMLAttributes: {
             class: "list-disc ml-3",
@@ -122,12 +124,16 @@ export default function RichTextEditor({ content, onChange, editable }) {
           },
         },
       }),
+      Heading.configure({
+        levels: [1, 2, 3],
+      }),
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
       Highlight,
     ],
-    content: content,
+    
+    content: content || "",
     editorProps: {
       attributes: {
         class: isEditable
@@ -139,6 +145,11 @@ export default function RichTextEditor({ content, onChange, editable }) {
       if (onChange) onChange(editor.getHTML());
     },
   });
+  useEffect(() => {
+    if (editor && content) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   return (
     <div>

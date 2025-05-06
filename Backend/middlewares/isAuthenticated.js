@@ -27,7 +27,7 @@ const isAuthenticated = async (req, res, next) => {
     }
 
     req.id = decode.userId;
-   req.user = user;
+   req.user = await prisma.user.findUnique({ where: { id: decode.userId } });;
     next();
   } catch (error) {
     console.log("JWT verification failed:", error.message);

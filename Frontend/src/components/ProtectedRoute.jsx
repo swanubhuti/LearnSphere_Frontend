@@ -1,35 +1,31 @@
-import { useSelector } from "react-redux"
+import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 
-export const ProtectedRoute = ({children}) => {
-    const {isAuthenticated} = useSelector(store=>store.auth);
+export const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated, isAuthLoading } = useSelector((store) => store.auth);
+  if (isAuthLoading) return <div>Checking authentication...</div>;
 
-    if(!isAuthenticated){
-        return <Navigate to="/login"/>
-    }
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
-    return children;
-}
-export const AuthenticatedUser = ({children}) => {
-    const {isAuthenticated} = useSelector(store=>store.auth);
+  return children;
+};
 
-    if(isAuthenticated){
-        return <Navigate to="/"/>
-    }
+export const InstructorRoute = ({ children }) => {
+  const { user, isAuthenticated, isAuthLoading } = useSelector(
+    (store) => store.auth
+  );
 
-    return children;
-}
+  if (isAuthLoading) return <div>Checking authentication...</div>;
 
-export const AdminRoute = ({children}) => {
-    const {user, isAuthenticated} = useSelector(store=>store.auth);
+  if (!isAuthenticated) {
+    return <Navigate to="/login" />;
+  }
 
-    if(!isAuthenticated){
-        return <Navigate to="/login"/>
-    }
+  if (user?.role !== "instructor") {
+    return <Navigate to="/" />;
+  }
 
-    if(user?.role !== "instructor"){
-        return <Navigate to="/"/>
-    }
-
-    return children;
-}
+  return children;
+};

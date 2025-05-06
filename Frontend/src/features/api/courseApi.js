@@ -59,7 +59,7 @@ export const courseApi = createApi({
     // 4. Publish/Unpublish Course
     togglePublishCourse: builder.mutation({
       query: ({ courseId, publish }) => ({
-        url: `/publish/${courseId}?publish=${publish}`,
+        url: `/publish/${courseId}`,
         method: "PATCH",
       }),
       invalidatesTags: ["Courses"],
@@ -92,6 +92,13 @@ export const courseApi = createApi({
        headers: () => ({}),
       }),
       invalidatesTags: ["Refetch_Creator_Course"],
+    }),
+    deleteCourse: builder.mutation({
+      query: (courseId) => ({
+        url: `/${courseId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: ["Courses"],
     }),
 
     // 8. Create Lecture
@@ -138,6 +145,13 @@ export const courseApi = createApi({
         url: `/lecture/${lectureId}`,
         method: "GET",
       }),
+     
+    }),
+    getInstructorStats: builder.query({
+      query: () => ({
+        url: "/instructor/stats",
+        method: "GET",
+      }),
     }),
   }),
 });
@@ -150,9 +164,13 @@ export const {
   useGetCourseByIdQuery,
   useGetCreatorCourseQuery,
   useEditCourseMutation,
+  useDeleteCourseMutation,
   useCreateLectureMutation,
   useGetCourseLectureQuery,
   useEditLectureMutation,
   useRemoveLectureMutation,
   useGetLectureByIdQuery,
+  useGetInstructorStatsQuery
+
+  
 } = courseApi;

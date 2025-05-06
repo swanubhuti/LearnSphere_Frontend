@@ -1,6 +1,6 @@
 import prisma from "../database/db.config.js";
 
-// Create Session
+
 export const createSession = async (req, res) => {
   try {
     const { courseId } = req.params;
@@ -17,7 +17,7 @@ export const createSession = async (req, res) => {
   }
 };
 
-// Edit Session
+
 export const editSession = async (req, res) => {
   try {
     const { sessionId } = req.params;

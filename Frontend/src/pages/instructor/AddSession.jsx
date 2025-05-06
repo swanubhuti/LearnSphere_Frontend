@@ -12,16 +12,12 @@ import RichTextEditor from "./RickTextEditor";
 const AddSession = () => {
   const { courseId } = useParams();
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [richText, setRichText] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
 
-  const editor = useEditor({
-    extensions: [StarterKit],
-    content: "",
-  });
 
   const handleSubmit = async () => {
-    const richText = editor?.getHTML();
+
 
     const res = await fetch(`http://localhost:3000/api/sessions/${courseId}`, {
       method: "POST",
@@ -36,7 +32,7 @@ const AddSession = () => {
       toast.success(data.message);
       setTitle("");
       setYoutubeUrl("");
-      setDescription("");
+      setRichText("");
       editor?.commands.setContent("");
     } else {
       toast.error(data.message || "Something went wrong");
@@ -70,10 +66,11 @@ const AddSession = () => {
         <EditorContent editor={editor} className="border p-2 rounded min-h-[200px]" />
       </div> */}
       <div>
-                  <Label>Description</Label>
-                  
-                  <RichTextEditor input={description} setInput={setDescription} />
-                </div>
+        <Label>Description</Label>
+
+        <RichTextEditor content={richText} onChange={setRichText} />
+
+      </div>
 
       <Button onClick={handleSubmit}>Create Session</Button>
     </div>

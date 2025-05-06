@@ -2,12 +2,12 @@ import prisma from "../database/db.config.js";
 
 export const enrollCourse = async (req, res) => {
   try {
-    console.log("EREQ.ID:", req.id); 
+    console.log("EREQ.ID:", req.id);
     const { courseId } = req.params;
     const userId = req.id;
 
     await prisma.user.update({
-      where: { id: userId },  
+      where: { id: userId },
       data: {
         enrolledCourses: {
           connect: { id: Number(courseId) },

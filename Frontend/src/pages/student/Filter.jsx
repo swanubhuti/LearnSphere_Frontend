@@ -10,15 +10,13 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 
 const categories = [
-  
   { id: "Data Science", label: "Data Science" },
   { id: "Web Development", label: "Web Development" },
   { id: "Computer Science", label: "Computer Science" },
   { id: "Programming", label: "Programming" },
-
   { id: "Javascript", label: "Javascript" },
   { id: "Next JS", label: "Next JS" },
   { id: "MongoDB", label: "MongoDB" },

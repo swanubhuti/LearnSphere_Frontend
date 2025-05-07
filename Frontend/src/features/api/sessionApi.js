@@ -4,25 +4,25 @@ export const sessionApi = createApi({
   reducerPath: "sessionApi",
   baseQuery: fetchBaseQuery({
     baseUrl: "http://localhost:3000/api/sessions",
-    credentials: "include", // Required for sending cookies (JWT, etc.)
+    credentials: "include", 
   }),
   endpoints: (builder) => ({
     getSessionsByCourse: builder.query({
-      query: (courseId) => `/${courseId}`, // GET /api/sessions/:courseId
+      query: (courseId) => `/${courseId}`, 
     }),
     getStudentSessionsByCourse: builder.query({
-      query: (courseId) => `/student/${courseId}`, // GET /api/sessions/student/:courseId
+      query: (courseId) => `/student/${courseId}`, 
     }),
     editSession: builder.mutation({
       query: ({ sessionId, ...data }) => ({
-        url: `/${sessionId}`, // PUT /api/sessions/:sessionId
+        url: `/${sessionId}`, 
         method: "PUT",
         body: data,
       }),
     }),
     deleteSession: builder.mutation({
       query: (sessionId) => ({
-        url: `/${sessionId}`, // DELETE /api/sessions/:sessionId
+        url: `/${sessionId}`, 
         method: "DELETE",
       }),
     }),

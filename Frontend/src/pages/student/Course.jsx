@@ -27,7 +27,7 @@ const Course = ({ course }) => {
               <Avatar className="h-8 w-8">
                 <AvatarImage
                   src={
-                    course.creator?.photoUrl || "https://github.com/shadcn.png"
+                      "https://github.com/shadcn.png"
                   }
                   alt="@shadcn"
                 />
@@ -54,12 +54,4 @@ const Course = ({ course }) => {
 
 export default Course;
 
-// import React from 'react'
 
-// const Course = () => {
-//   return (
-//     <div>Course</div>
-//   )
-// }
-
-// export default Course

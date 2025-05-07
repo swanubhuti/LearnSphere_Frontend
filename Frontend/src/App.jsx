@@ -25,15 +25,6 @@ import Stats from "./pages/instructor/Stats";
 const App = () => {
   const dispatch = useDispatch();
 
-  // Read token from cookies (only runs client-side)
-  // const token = typeof document !== "undefined"
-  //   ? document.cookie
-  //       .split("; ")
-  //       .find((row) => row.startsWith("token="))
-  //       ?.split("=")[1]
-  //   : null;
-
-  // Skip if no token
   const { data, isLoading, error, isSuccess, isError } = useLoadUserQuery();
 
   useEffect(() => {
@@ -50,8 +41,17 @@ const App = () => {
       <BrowserRouter>
         <Navbar />
         <Routes>
-  <Route path="/" element={<MainLayout />}>
-    <Route index element={<><HeroSection /><Courses /></>} /></Route>
+          <Route path="/" element={<MainLayout />}>
+            <Route
+              index
+              element={
+                <>
+                  <HeroSection />
+                  <Courses />
+                </>
+              }
+            />
+          </Route>
           <Route path="/login" element={<Login />} />
           <Route path="/course/search" element={<SearchPage />} />
           <Route
@@ -115,7 +115,7 @@ const App = () => {
               </InstructorRoute>
             }
           />
-           <Route
+          <Route
             path="instructor/dashboard/stats"
             element={
               <InstructorRoute>
@@ -150,6 +150,15 @@ const App = () => {
               </InstructorRoute>
             }
           />
+          <Route
+            path="/dashboard/course/:courseId/sessions/edit/:sessionId"
+            element={
+              <InstructorRoute>
+                <AddSession />
+              </InstructorRoute>
+            }
+          />
+
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

@@ -1,39 +1,62 @@
-import React, { useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import ReactPlayer from "react-player/youtube";
-import { Button } from "@/components/ui/button";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
-import { useParams } from "react-router-dom";
-import { Label } from "../../components/ui/label";
 import RichTextEditor from "./RickTextEditor";
+import { Label } from "@/components/ui/label";
+import ReactPlayer from "react-player/youtube";
 
 const AddSession = () => {
-  const { courseId } = useParams();
-  const [title, setTitle] = useState("");
-  const [richText, setRichText] = useState("");
-  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const { courseId, sessionId } = useParams();
+  const isEdit = Boolean(sessionId);
+  const navigate = useNavigate();
 
+  const [title, setTitle] = useState("");
+  const [youtubeUrl, setYoutubeUrl] = useState("");
+  const [richText, setRichText] = useState("");
+
+  useEffect(() => {
+    if (isEdit) {
+      // Fetch session to edit
+      fetch(`http://localhost:3000/api/sessions/single/${sessionId}`, {
+        credentials: "include",
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          setTitle(data.title);
+          setYoutubeUrl(data.videoUrl); 
+
+          setRichText(data.richText);
+        })
+        .catch(() => toast.error("Failed to load session data"));
+    }
+  }, [isEdit, sessionId]);
 
   const handleSubmit = async () => {
+    const url = isEdit
+      ? `http://localhost:3000/api/sessions/${sessionId}`
+      : `http://localhost:3000/api/sessions/${courseId}`;
+    const method = isEdit ? "PUT" : "POST";
 
-
-    const res = await fetch(`http://localhost:3000/api/sessions/${courseId}`, {
-      method: "POST",
+    const res = await fetch(url, {
+      method,
       headers: { "Content-Type": "application/json" },
       credentials: "include",
-      body: JSON.stringify({ title, youtubeUrl, richText }),
+      body: JSON.stringify({ title, videoUrl: youtubeUrl, richText }),
     });
 
     const data = await res.json();
 
     if (res.ok) {
       toast.success(data.message);
-      setTitle("");
-      setYoutubeUrl("");
-      setRichText("");
-      editor?.commands.setContent("");
+      if (isEdit) {
+        navigate(`/dashboard/course/${courseId}/sessions`);
+      } else {
+        setTitle("");
+        setYoutubeUrl("");
+        setRichText("");
+      }
     } else {
       toast.error(data.message || "Something went wrong");
     }
@@ -41,7 +64,9 @@ const AddSession = () => {
 
   return (
     <div className="max-w-3xl mx-auto p-24 space-y-4">
-      <h1 className="text-xl font-bold">Add New Session</h1>
+      <h1 className="text-xl font-bold">
+        {isEdit ? "Edit Session" : "Add New Session"}
+      </h1>
 
       <Input
         placeholder="Session Title"
@@ -61,18 +86,14 @@ const AddSession = () => {
         </div>
       )}
 
-      {/* <div>
-        <h2 className="font-semibold">Explanation</h2>
-        <EditorContent editor={editor} className="border p-2 rounded min-h-[200px]" />
-      </div> */}
       <div>
         <Label>Description</Label>
-
         <RichTextEditor content={richText} onChange={setRichText} />
-
       </div>
 
-      <Button onClick={handleSubmit}>Create Session</Button>
+      <Button onClick={handleSubmit}>
+        {isEdit ? "Update Session" : "Create Session"}
+      </Button>
     </div>
   );
 };

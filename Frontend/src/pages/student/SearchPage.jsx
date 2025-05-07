@@ -11,7 +11,6 @@ const SearchPage = () => {
   const [searchParams] = useSearchParams();
   const query = searchParams.get("query")|| "";
 
-  // Merge selected categories and sortByPrice into a single state object
   const [filters, setFilters] = useState({
     selectedCategories: [],
     sortByPrice: "",
@@ -39,7 +38,7 @@ const SearchPage = () => {
   const isEmpty = !isLoading && data?.courses.length === 0;
 
   const handleFilterChange = (categories, price) => {
-    // Update the filters state with both categories and sortByPrice
+    
     setFilters({ selectedCategories: categories, sortByPrice: price });
   };
   return (

@@ -71,7 +71,6 @@ const Login = () => {
   const handleRegistration = async (type) => {
     const inputData = type === "signup" ? signupInput : loginInput;
 
-    // Basic validations
     if (
       !inputData.email ||
       !inputData.email.includes("@") ||

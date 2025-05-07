@@ -31,7 +31,8 @@ const ViewSessions = () => {
 
   const handleEditSubmit = async (e, sessionId) => {
     e.preventDefault();
-    await editSession({ sessionId, ...formData });
+    await editSession({ sessionId, title: formData.title, videoUrl: formData.youtubeUrl, richText: formData.richText });
+
     setEditModeId(null);
     refetch();
 
@@ -50,7 +51,7 @@ const ViewSessions = () => {
   return (
     <div className="p-6 md:p-12 lg:p-24">
       <div className="flex justify-between items-center  mb-7 ">
-        <h2 className="text-3xl text-sky-900 font-bold">Sessions</h2>
+        <h2 className="text-3xl fixed text-sky-900 font-bold">Sessions</h2>
         <Button className = "bg-sky-900 fixed right-9 z-50" onClick={() => navigate(`/session/${courseId}`) }>Add New Session</Button>
       </div>
 
@@ -103,7 +104,11 @@ const ViewSessions = () => {
                     dangerouslySetInnerHTML={{ __html: session.richText }}
                   />
                   <div className="flex gap-2 mt-4">
-                    <Button size="sm" onClick={() => handleEditClick(session)}>
+                    <Button size="sm" onClick={() =>
+                navigate(
+                  `/dashboard/course/${session.courseId}/sessions/edit/${session.id}`
+                )
+              }>
                       Edit
                     </Button>
                     <Button size="sm" variant="destructive" onClick={() => handleDelete(session.id)}>

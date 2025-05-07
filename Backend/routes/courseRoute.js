@@ -8,7 +8,6 @@ import {
   getCourseById,
   deleteCourse,
   getCreatorCourses,
- 
 } from "../controllers/course.controller.js";
 import isAuthenticated from "../middlewares/isAuthenticated.js";
 import upload from "../utils/multer.js";
@@ -41,7 +40,7 @@ router.get("/:courseId", isAuthenticated, getCourseById);
 
 router.get("/instructor/courses", isAuthenticated, getCreatorCourses);
 
-router.delete("/:courseId", isAuthenticated,deleteCourse);
+router.delete("/:courseId", isAuthenticated, deleteCourse);
 router.put(
   "/:courseId",
   isAuthenticated,
@@ -49,6 +48,5 @@ router.put(
   editCourse
 );
 router.get("/instructor/stats", isAuthenticated, getInstructorStats);
-
 
 export default router;

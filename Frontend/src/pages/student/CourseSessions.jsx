@@ -11,7 +11,6 @@ const CourseSessions = () => {
   const [completedSessions, setCompletedSessions] = useState({});
   const [expandedSession, setExpandedSession] = useState(null);
 
-  // Load completion status from localStorage
   useEffect(() => {
     const stored = localStorage.getItem(storageKey);
     if (stored) {
@@ -51,7 +50,6 @@ const CourseSessions = () => {
         </div>
       </div>
 
-      {/* Session Tiles */}
       <div className="space-y-4">
         {data.sessions.map((session, index) => {
           const isCompleted = completedSessions[session.id];
@@ -59,7 +57,7 @@ const CourseSessions = () => {
 
           return (
             <div key={session.id} className="bg-white border rounded-lg shadow-md p-4">
-              {/* Session Title (Dropdown Trigger) */}
+             
               <button
                 onClick={() => toggleSession(session.id)}
                 className="w-full text-left text-lg font-semibold flex justify-between items-center"
@@ -68,13 +66,13 @@ const CourseSessions = () => {
                 <span>{isExpanded ? "▲" : "▼"}</span>
               </button>
 
-              {/* Dropdown Content */}
+            
               {isExpanded && (
                 <div className="mt-4">
                   <ReactPlayer url={session.videoUrl} controls width="100%" />
                   <p className="text-sm mt-2" dangerouslySetInnerHTML={{ __html: session.richText }} />
 
-                  {/* Completion Button */}
+                
                   <button
                     onClick={() => toggleCompletion(session.id)}
                     className={`mt-4 w-full py-2 rounded-lg font-medium ${
